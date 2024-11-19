@@ -3,7 +3,7 @@ import json
 from bs4 import BeautifulSoup
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from app.database import Database
-from app.notifier import Notifier
+from app.notifier import AnnouncementsNotifier
 from pprint import pprint
 
 class ProsasScraper:
@@ -16,7 +16,7 @@ class ProsasScraper:
         self.session = requests.Session()
         self.session.get(self.BASE_URL)
         self.db = Database()
-        self.notifier = Notifier(self.webhook)
+        self.notifier = AnnouncementsNotifier(self.webhook)
 
     def _clean_text(self, text: str) -> str:
         return text.replace("\n", "").replace("  ", "").replace("location_on", "").strip()
