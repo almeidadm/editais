@@ -3,7 +3,7 @@ from pprint import pprint
 
 from bs4 import BeautifulSoup
 from app.database import Database
-from app.notifier import Notifier
+from app.notifier import AnnouncementsNotifier
 
 
 class AbcrScraper:
@@ -15,7 +15,7 @@ class AbcrScraper:
         self.session = requests.Session()
         self.session.get(self.BASE_URL)
         self.db = Database()
-        self.notifier = Notifier(self.webhook)
+        self.notifier = AnnouncementsNotifier(self.webhook)
 
     def search_announcements(self):
         response = self.session.get(self.ANNOUNCEMENT_URL)
@@ -25,6 +25,8 @@ class AbcrScraper:
         soup = BeautifulSoup(response.content, "html.parser")
         announcements = soup.select("div.post-title a")
 
+
+        new_announcements = []
         for announcement in announcements:
             item = {
                 'id': announcement.get('href', self.ANNOUNCEMENT_URL),
@@ -33,9 +35,10 @@ class AbcrScraper:
                 'locais': '',
                 'url': announcement.get('href', self.ANNOUNCEMENT_URL),
             }
-            pprint(item)
             if self.db.save_announcement(item):
                 self.notifier.send_notification(item)
+                new_announcements.append(item)
+        
 
 
 if __name__ == "__main__":
