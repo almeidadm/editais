@@ -12,4 +12,4 @@ class ProsasScraper:
     ANNOUNCEMENT_URL = f"{BASE_URL}/editais/{{id}}"
     SEARCH_URL = f"{BASE_URL}/selecao/api/v2/publics/oportunidades"
     webhook = "1303555833556111360/QeCyDI6Nb-iMkV5yF0YRdO7VlRFvbQDJtGQOpV4ktzv0igzb-J3fHpCphVhAn7pZJhzC"
-
+    # nova edição
